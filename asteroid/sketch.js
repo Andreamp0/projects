@@ -185,7 +185,7 @@ function setup() {
         }
       } // draw rocks
       fill(255, 255, 255);
-      text("Points: " + points + "\nTime: " + (now - time) / 1000, 5, 5);
+      text("Points: " + points + "\nTime: " + ((now - time) / 1000).toFixed(3), 5, 5);
     } else if (scene === 2) {
       background(bColor);
       fill(255, 255, 0);
