@@ -1,7 +1,7 @@
 function setup() {
   createCanvas(400, 400);
   {
-    textFont(loadFont("OCRAEXT.TTF", 1));
+    textFont(loadFont("OCRAEXT.TTF"));
     var scene = 0;
     var rock = loadImage("Rock.png");
     var rocks = [];
@@ -15,18 +15,19 @@ function setup() {
     var time = millis();
     var points = 0;
     var lFrame = false;
-    var Button = function (xPosition, yPosition, tWidth, tLength, text) {
-      this.xPosition = xPosition;
-      this.yPosition = yPosition;
-      this.tWidth = tWidth;
-      this.tLength = tLength;
-      this.text = text;
+    var Button = function (things) {
+      this.xPosition = things.xPosition;
+      this.yPosition = things.yPosition;
+      this.tWidth = things.tWidth;
+      this.tLength = things.tLength;
+      this.text = things.text;
+      this.doF = things.doF;
     };
-    var start = false;
+    var bColor = color(10, 0, 50);
   } // variables
 
   {
-    Button.prototype.retry = function () {
+    Button.prototype.draw = function () {
       var a;
       var b;
       if (
@@ -38,12 +39,15 @@ function setup() {
         var a = color(150, 150, 150);
         var b = color(255, 255, 255);
         if (mouseIsPressed) {
-          time = millis();
-          points = 0;
-          rocks = [];
-          textAlign(LEFT, TOP);
-          textSize(21);
-          scene = 1;
+          this.doF();
+          /*
+            time = millis();
+            points = 0;
+            rocks = [];
+            textAlign(LEFT, TOP);
+            textSize(21);
+            scene = 1;
+            */
         }
       } else {
         var a = color(255, 255, 255);
@@ -54,68 +58,65 @@ function setup() {
       fill(b);
       textAlign(CENTER, CENTER);
       text(
-        "RETRY",
+        this.text,
         this.xPosition + this.tWidth / 2,
         this.yPosition + this.tLength / 2
       );
     };
-    Button.prototype.start = function () {
-      Button.prototype.retry = function () {
-        var a;
-        var b;
-        if (
-          mouseX > this.xPosition &&
-          mouseX < this.xPosition + this.tWidth &&
-          mouseY > this.yPosition &&
-          mouseY < this.yPosition + this.tLength
-        ) {
-          var a = color(150, 150, 150);
-          var b = color(255, 255, 255);
-          if (mouseIsPressed) {
-            scene = 1;
-          }
-        } else {
-          var a = color(255, 255, 255);
-          var b = color(100, 100, 100);
-        }
-        fill(a);
-        rect(this.xPosition, this.yPosition, this.tWidth, this.tLength);
-        fill(b);
-        textAlign(CENTER, CENTER);
-        text(
-          "START",
-          this.xPosition + this.tWidth / 2,
-          this.yPosition + this.tLength / 2
-        );
-      };
-    };
 
-    var retry = new Button(150, 300, 100, 33, "Retry");
+    var retry = new Button({
+      xPosition: 150,
+      yPosition: 300,
+      tWidth: 100,
+      tLength: 33,
+      text: "Retry",
+      doF: function () {
+        time = millis();
+        points = 0;
+        rocks = [];
+        textAlign(LEFT, TOP);
+        textSize(21);
+        scene = 1;
+      },
+    });
+
+    var start = new Button({
+      xPosition: 150,
+      yPosition: 300,
+      tWidth: 100,
+      tLength: 33,
+      text: "Start",
+      doF: function () {
+        scene = 1;
+      },
+    });
   } // buttons
 
-  noStroke();
-  var stars = [];
+  {
+    noStroke();
+    var stars = [];
 
-  var Star = function (x, y) {
-    this.x = x;
-    this.y = y;
-  };
+    var Star = function (x, y) {
+      this.x = x;
+      this.y = y;
+    };
 
-  Star.prototype.draw = function () {
-    if (floor(random(0, 60)) !== 0) {
-      ellipse(this.x, this.y, 1, 1);
+    Star.prototype.draw = function () {
+      if (floor(random(0, 60)) !== 0) {
+        ellipse(this.x, this.y, 1, 1);
+      }
+    };
+
+    for (var i = 0; i < 200; i++) {
+      stars.push(new Star(random(0, 400), random(0, 400)));
     }
-  };
 
-  for (var i = 0; i < 200; i++) {
-    stars.push(new Star(random(0, 400), random(0, 400)));
-  }
-
-  var drawStars = function () {
-    for (var i = 0; i < stars.length; i++) {
-      stars[i].draw();
-    }
-  };
+    var drawStars = function () {
+      for (var i = 0; i < stars.length; i++) {
+        stars[i].draw();
+      }
+    };
+  } // stars
 
   textSize(21);
   Rock.prototype.draw = function () {
@@ -127,20 +128,26 @@ function setup() {
         this.size + this.distance,
         (this.size + this.distance) * 1.5
       );
-      var time = millis();
-      //println(millis() % 429);
       this.distance += 1;
+      /*   
+        if (mouseX > this.x - (this.size+this.distance) / 2 && mouseX < this.x + (this.size+this.distance) / 2 && mouseY > this.y - (this.size+this.distance) / 2 && mouseY < this.y + (this.size+this.distance) / 2 && mouseIsPressed) {
+            points += 110-this.distance;
+            this.end = true;
+        }
+        */
+    }
+  };
 
-      if (
-        mouseX > this.x - (this.size + this.distance) / 2 &&
-        mouseX < this.x + (this.size + this.distance) / 2 &&
-        mouseY > this.y - (this.size + this.distance) / 2 &&
-        mouseY < this.y + (this.size + this.distance) / 2 &&
-        mouseIsPressed
-      ) {
-        points += 110 - this.distance;
-        this.end = true;
-      }
+  Rock.prototype.handle = function () {
+    if (
+      mouseX > this.x - (this.size + this.distance) / 2 &&
+      mouseX < this.x + (this.size + this.distance) / 2 &&
+      mouseY > this.y - (this.size + this.distance) / 2 &&
+      mouseY < this.y + (this.size + this.distance) / 2 &&
+      !this.end
+    ) {
+      points += 110 - this.distance;
+      this.end = true;
     }
   };
 
@@ -153,13 +160,14 @@ function setup() {
       if (now - time >= 15000) {
         scene = 2;
       }
-      background(10, 0, 50);
+      background(bColor);
       fill(255, 255, 0);
       drawStars();
 
       textAlign(LEFT, TOP);
-      // random number, if 1:
+      // create rocks
       {
+        // random number, if 1:
         if (floor(random(1, 32)) === 1) {
           rocks.push(
             new Rock(
@@ -177,13 +185,9 @@ function setup() {
         }
       } // draw rocks
       fill(255, 255, 255);
-      text(
-        "Points: " + points + "\nTime: " + ((now - time) / 1000).toFixed(3),
-        5,
-        5
-      );
+      text("Points: " + points + "\nTime: " + (now - time) / 1000, 5, 5);
     } else if (scene === 2) {
-      background(10, 0, 50);
+      background(bColor);
       fill(255, 255, 0);
       drawStars();
       for (var i = 0; i < rocks.length; i++) {
@@ -202,8 +206,20 @@ function setup() {
       text(points, 200, 255);
       textSize(21);
       scene = 3;
-    } else {
-      retry.retry();
+    } else if (scene === 3) {
+      retry.draw();
+    } else if (scene === 0) {
+      background(bColor);
+      for (var i = 0; i < stars.length; i++) {
+        fill(255, 255, 0);
+        stars[i].draw();
+      }
+      start.draw();
+    }
+  };
+  mousePressed = function () {
+    for (var i = 0; i < rocks.length; i++) {
+      rocks[i].handle();
     }
   };
 }
