@@ -199,7 +199,7 @@ function setup() {
       } // draw rocks
       fill(255, 255, 255);
       text(
-        "Points: " + points + "\nTime: " + ((now - time) / 1000).toFixed(3),
+        "Points: " + floor(points) + "\nTime: " + ((now - time) / 1000).toFixed(3),
         5,
         5
       );
@@ -213,14 +213,14 @@ function setup() {
       fill(255, 255, 255, 50);
       rect(0, 0, 400, 400);
       fill(255, 255, 255);
-      text("Points: " + points + "\nTime: 15", 5  / 400 * document.body.offsetWidth, 5 / 400 * document.body.offsetWidth);
+      text("Points: " + floor(points) + "\nTime: 15", 5  / 400 * document.body.offsetWidth, 5 / 400 * document.body.offsetWidth);
       textSize(41 / 400 * document.body.offsetWidth);
       textAlign(CENTER, CENTER);
       text("GAME OVER", 200 / 400 * document.body.offsetWidth, 150 / 400 * document.body.offsetWidth);
       textSize(35 / 400 * document.body.offsetWidth);
       text("Your score is:", 200 / 400 * document.body.offsetWidth, 200 / 400 * document.body.offsetWidth);
       textSize(57 / 400 * document.body.offsetWidth);
-      text(points, 200 / 400 * document.body.offsetWidth, 255 / 400 * document.body.offsetWidth);
+      text(floor(points), 200 / 400 * document.body.offsetWidth, 255 / 400 * document.body.offsetWidth);
       textSize(21 / 400 * document.body.offsetWidth);
       scene = 3;
     } else if (scene === 3) {
