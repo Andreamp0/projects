@@ -12,7 +12,7 @@ function setup() {
       this.distance = distance;
       this.end = false;
     };
-    var time = millis();
+    var time;
     var points = 0;
     var lFrame = false;
     var Button = function (things) {
@@ -99,6 +99,7 @@ function setup() {
       doF: function () {
         scene = 1;
         rocks = [];
+        time = millis();
       },
     });
   } // buttons
