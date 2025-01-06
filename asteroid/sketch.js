@@ -1,9 +1,9 @@
 function setup() {
   createCanvas(400, 400);
   {
-    textFont(loadFont("OCR A", 1));
+    textFont(loadFont("OCRAEXT.TTF", 1));
     var scene = 0;
-    var rock = loadImage("cute/Rock");
+    var rock = loadImage("Rock.png");
     var rocks = [];
     var Rock = function (x, y, size, distance) {
       this.x = x;
