@@ -1,9 +1,9 @@
 function setup() {
   createCanvas(400, 400);
   {
-    textFont(loadFont("OCRAEXT.TTF"));
+    textFont(loadFont("OCR A", 1));
     var scene = 0;
-    var rock = loadImage("Rock.png");
+    var rock = loadImage("cute/Rock");
     var rocks = [];
     var Rock = function (x, y, size, distance) {
       this.x = x;
@@ -36,11 +36,10 @@ function setup() {
         mouseY > this.yPosition &&
         mouseY < this.yPosition + this.tLength
       ) {
-        var a = color(150, 150, 150);
-        var b = color(255, 255, 255);
-        if (mouseIsPressed) {
-          this.doF();
-          /*
+        a = color(150, 150, 150);
+        b = color(255, 255, 255);
+
+        /*
             time = millis();
             points = 0;
             rocks = [];
@@ -48,20 +47,31 @@ function setup() {
             textSize(21);
             scene = 1;
             */
-        }
       } else {
-        var a = color(255, 255, 255);
-        var b = color(100, 100, 100);
+        a = color(255, 255, 255);
+        b = color(100, 100, 100);
       }
       fill(a);
       rect(this.xPosition, this.yPosition, this.tWidth, this.tLength);
       fill(b);
       textAlign(CENTER, CENTER);
+      textSize(21);
       text(
         this.text,
         this.xPosition + this.tWidth / 2,
         this.yPosition + this.tLength / 2
       );
+    };
+
+    Button.prototype.handle = function () {
+      if (
+        mouseX > this.xPosition &&
+        mouseX < this.xPosition + this.tWidth &&
+        mouseY > this.yPosition &&
+        mouseY < this.yPosition + this.tLength
+      ) {
+        this.doF();
+      }
     };
 
     var retry = new Button({
@@ -88,6 +98,7 @@ function setup() {
       text: "Start",
       doF: function () {
         scene = 1;
+        rocks = [];
       },
     });
   } // buttons
@@ -185,7 +196,11 @@ function setup() {
         }
       } // draw rocks
       fill(255, 255, 255);
-      text("Points: " + points + "\nTime: " + ((now - time) / 1000).toFixed(3), 5, 5);
+      text(
+        "Points: " + points + "\nTime: " + ((now - time) / 1000).toFixed(3),
+        5,
+        5
+      );
     } else if (scene === 2) {
       background(bColor);
       fill(255, 255, 0);
@@ -210,16 +225,38 @@ function setup() {
       retry.draw();
     } else if (scene === 0) {
       background(bColor);
+      fill(255, 255, 0);
+      if (floor(random(1, 32)) === 1) {
+        rocks.push(
+          new Rock(
+            floor(random(50, 350)),
+            floor(random(50, 350)),
+            floor(random(80, 100)),
+            0
+          )
+        );
+      }
       for (var i = 0; i < stars.length; i++) {
-        fill(255, 255, 0);
         stars[i].draw();
       }
+      for (var i = 0; i < rocks.length; i++) {
+        rocks[i].draw();
+      }
+      fill(255, 255, 255);
+      textSize(64);
+      text("ASTEROID", 200, 200);
       start.draw();
     }
   };
-  mousePressed = function () {
-    for (var i = 0; i < rocks.length; i++) {
-      rocks[i].handle();
+  mouseClicked = function () {
+    if (scene === 1) {
+      for (var i = 0; i < rocks.length; i++) {
+        rocks[i].handle();
+      }
+    } else if (scene === 0) {
+      start.handle();
+    } else if (scene === 3) {
+      retry.handle();
     }
   };
 }
