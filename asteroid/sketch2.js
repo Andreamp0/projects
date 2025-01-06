@@ -56,7 +56,7 @@ function setup() {
       rect(this.xPosition, this.yPosition, this.tWidth, this.tLength);
       fill(b);
       textAlign(CENTER, CENTER);
-      textSize(21);
+      textSize(21 / 400 * document.body.offsetWidth);
       text(
         this.text,
         this.xPosition + this.tWidth / 2,
@@ -131,7 +131,7 @@ function setup() {
     };
   } // stars
 
-  textSize(21);
+  textSize(21 / 400 * document.body.offsetWidth);
   Rock.prototype.draw = function () {
     if (this.distance < 100 / 400 * document.body.offsetWidth && !this.end) {
       image(
