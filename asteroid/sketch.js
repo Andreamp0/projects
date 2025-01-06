@@ -249,12 +249,15 @@ function setup() {
       start.draw();
     }
   };
-  mouseClicked = function () {
+  mousePressed = function () {
     if (scene === 1) {
       for (var i = 0; i < rocks.length; i++) {
         rocks[i].handle();
       }
-    } else if (scene === 0) {
+    }
+  };
+  mouseClicked = function () {
+    if (scene === 0) {
       start.handle();
     } else if (scene === 3) {
       retry.handle();
