@@ -1,5 +1,5 @@
 function setup() {
-  createCanvas(document.body.offsetWidth, document.body.offsetWidth);
+  createCanvas(400, 400);
   {
     textFont(loadFont("OCRAEXT.TTF", 1));
     var scene = 0;
