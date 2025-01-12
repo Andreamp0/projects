@@ -1,5 +1,6 @@
 function setup() {
   createCanvas(document.body.offsetWidth, document.body.offsetWidth);
+  scale(width / 400, height / 400);
 
   {
     textFont(loadFont("OCRAEXT.TTF", 1));
@@ -56,7 +57,7 @@ function setup() {
       rect(this.xPosition, this.yPosition, this.tWidth, this.tLength);
       fill(b);
       textAlign(CENTER, CENTER);
-      textSize(21 / 400 * document.body.offsetWidth);
+      textSize(21);
       text(
         this.text,
         this.xPosition + this.tWidth / 2,
@@ -76,26 +77,26 @@ function setup() {
     };
 
     var retry = new Button({
-      xPosition: 150 / 400 * document.body.offsetWidth,
-      yPosition: 300 / 400 * document.body.offsetWidth,
-      tWidth: 100  / 400 * document.body.offsetWidth,
-      tLength: 33 / 400 * document.body.offsetWidth,
+      xPosition: 150,
+      yPosition: 300,
+      tWidth: 100,
+      tLength: 33,
       text: "Retry",
       doF: function () {
         time = millis();
         points = 0;
         rocks = [];
         textAlign(LEFT, TOP);
-        textSize(21  / 400 * document.body.offsetWidth);
+        textSize(21);
         scene = 1;
       },
     });
 
     var start = new Button({
-      xPosition: 150 / 400 * document.body.offsetWidth,
-      yPosition: 300 / 400 * document.body.offsetWidth,
-      tWidth: 100 / 400 * document.body.offsetWidth,
-      tLength: 33 / 400 * document.body.offsetWidth,
+      xPosition: 150,
+      yPosition: 300,
+      tWidth: 100,
+      tLength: 33,
       text: "Start",
       doF: function () {
         scene = 1;
@@ -121,7 +122,7 @@ function setup() {
     };
 
     for (var i = 0; i < 200; i++) {
-      stars.push(new Star(random(0, document.body.offsetWidth), random(0, document.body.offsetWidth)));
+      stars.push(new Star(random(0, 400), random(0, 400)));
     }
 
     var drawStars = function () {
@@ -131,9 +132,9 @@ function setup() {
     };
   } // stars
 
-  textSize(21 / 400 * document.body.offsetWidth);
+  textSize(21);
   Rock.prototype.draw = function () {
-    if (this.distance < 100 / 400 * document.body.offsetWidth && !this.end) {
+    if (this.distance < 100 && !this.end) {
       image(
         rock,
         this.x,
@@ -141,7 +142,7 @@ function setup() {
         this.size + this.distance,
         (this.size + this.distance) * 1.5
       );
-      this.distance += 1  / 400 * document.body.offsetWidth;
+      this.distance += 1;
       /*   
         if (mouseX > this.x - (this.size+this.distance) / 2 && mouseX < this.x + (this.size+this.distance) / 2 && mouseY > this.y - (this.size+this.distance) / 2 && mouseY < this.y + (this.size+this.distance) / 2 && mouseIsPressed) {
             points += 110-this.distance;
@@ -159,7 +160,7 @@ function setup() {
       mouseY < this.y + (this.size + this.distance) / 2 &&
       !this.end
     ) {
-      points += 110 - this.distance / document.body.offsetWidth * 400;
+      points += 110 - this.distance;
       this.end = true;
     }
   };
@@ -184,9 +185,9 @@ function setup() {
         if (floor(random(1, 32)) === 1) {
           rocks.push(
             new Rock(
-              floor(random(50, document.body.offsetWidth - 50)),
-              floor(random(50, document.body.offsetWidth - 50)),
-              floor(random(80  / 400 * document.body.offsetWidth, 100 / 400 * document.body.offsetWidth)),
+              floor(random(50, 350)),
+              floor(random(50, 350)),
+              floor(random(80, 100)),
               0
             )
           );
@@ -199,7 +200,7 @@ function setup() {
       } // draw rocks
       fill(255, 255, 255);
       text(
-        "Points: " + floor(points) + "\nTime: " + ((now - time) / 1000).toFixed(3),
+        "Points: " + points + "\nTime: " + ((now - time) / 1000).toFixed(3),
         5,
         5
       );
@@ -213,15 +214,15 @@ function setup() {
       fill(255, 255, 255, 50);
       rect(0, 0, 400, 400);
       fill(255, 255, 255);
-      text("Points: " + floor(points) + "\nTime: 15", 5  / 400 * document.body.offsetWidth, 5 / 400 * document.body.offsetWidth);
-      textSize(41 / 400 * document.body.offsetWidth);
+      text("Points: " + points + "\nTime: 15", 5, 5);
+      textSize(41);
       textAlign(CENTER, CENTER);
-      text("GAME OVER", 200 / 400 * document.body.offsetWidth, 150 / 400 * document.body.offsetWidth);
-      textSize(35 / 400 * document.body.offsetWidth);
-      text("Your score is:", 200 / 400 * document.body.offsetWidth, 200 / 400 * document.body.offsetWidth);
-      textSize(57 / 400 * document.body.offsetWidth);
-      text(floor(points), 200 / 400 * document.body.offsetWidth, 255 / 400 * document.body.offsetWidth);
-      textSize(21 / 400 * document.body.offsetWidth);
+      text("GAME OVER", 200, 150);
+      textSize(35);
+      text("Your score is:", 200, 200);
+      textSize(57);
+      text(points, 200, 255);
+      textSize(21);
       scene = 3;
     } else if (scene === 3) {
       retry.draw();
@@ -231,9 +232,9 @@ function setup() {
       if (floor(random(1, 32)) === 1) {
         rocks.push(
           new Rock(
-            floor(random(50,  document.body.offsetWidth - 50)),
-            floor(random(50,  document.body.offsetWidth - 50)),
-            floor(random(80 / 400 * document.body.offsetWidth, 100 / 400 * document.body.offsetWidth)),
+            floor(random(50, 350)),
+            floor(random(50, 350)),
+            floor(random(80, 100)),
             0
           )
         );
@@ -245,8 +246,8 @@ function setup() {
         rocks[i].draw();
       }
       fill(255, 255, 255);
-      textSize(64 / 400 * document.body.offsetWidth);
-      text("ASTEROID", 200 / 400 * document.body.offsetWidth, 200 / 400 * document.body.offsetWidth);
+      textSize(64);
+      text("ASTEROID", 200, 200);
       start.draw();
     }
   };
