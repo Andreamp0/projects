@@ -1,6 +1,6 @@
 function setup() {
   createCanvas(document.body.offsetWidth, document.body.offsetWidth);
-  scale(width / 400, height / 400);
+  scale(document.body.offsetWidth / 400, document.body.offsetWidth / 400);
 
   {
     textFont(loadFont("OCRAEXT.TTF", 1));
